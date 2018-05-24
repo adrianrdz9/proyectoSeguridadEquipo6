@@ -5,7 +5,7 @@
 	<meta charset="utf-8"/>
 </head>
 <body>
-	<form method='post' action='formulario.php'>
+	<form method='post' action='formulario.php' id='form'>
 		Nombre: <br/>
 		<input type='text' name='nom' required pattern='[A-Za-z]+' title='Ingresa solo letras'/> <br/>
 		Apellido Paterno: <br/>
@@ -26,7 +26,61 @@
 		[\:]|[\"]|[\<]|[\>]|[\?]|[\,][^(13245)|(qwert)|(asdfg)|(zxcv)|aaa|ooo|eee|iii|uuu]
 		[^ñ|á|í|ó|ú|ü|ö|Á|É|Í|Ó|Ú|Ü|Ö])+'
 		title='Mayusculas, minusculas, número y caracteres espaciales'/> <br/>
-		<p><input type='submit' value='Enviar' /></p>
+		<p><input type='submit' value='Enviar' id="enviar"/></p>
+		<div id="avisos">
+			<h1></h1>
+			<ul></ul>
+		</div>
 	</form>
+
+
+	<script>
+		document.querySelector('#enviar').addEventListener("click", function(ev){
+			var request = new XMLHttpRequest();
+
+			request.onreadystatechange = function(){
+				if(this.readyState == 4 && this.status == 200){
+					
+					var response = JSON.parse(this.responseText);
+					
+					if(response.errores <= 0){
+						document.querySelector('#form').submit();
+					}else{
+						var contenedor = document.querySelector('#avisos');
+						contenedor.getElementsByTagName('h1')[0].innerHTML = "Errores (" + response.errores + "):"
+						contenedor.getElementsByTagName('ul')[0]
+							.innerHTML = ""
+						for(var i = 0; i < response.errores; i++){
+							contenedor.getElementsByTagName('ul')[0]
+							.innerHTML += "<li>" + response[i] + "</li>";
+						}
+						
+					}
+				}
+			}
+
+			request.open('POST', './validacionAJAX.php', true);
+			request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			var datos = "";
+			document.querySelectorAll('input:not([type="submit"])').forEach((el, i, arr)=>{
+				datos += el.name;
+				datos += "=";
+				datos += encodeURIComponent(el.value);
+				if(arr[i+1]){
+					datos+="&";
+				}
+			})
+
+			
+			
+			request.send(datos);
+		
+			
+			
+			
+			ev.preventDefault();
+		})
+	</script>
+
 </body>
 </html>

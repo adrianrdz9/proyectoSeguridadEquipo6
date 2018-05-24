@@ -1,10 +1,12 @@
 <?php
+    $respuesta = [];
 	function val($r,$s,$n){//funcion para validacion
 		if (!preg_match($r,$s)){
-			echo "Formato de $n invalido <br/>";
+            global $respuesta;
+            array_push($respuesta,  "$n invalido");
 			return 1;
 		}else{
-			echo $n.':'.' '.'<br/>'.$s.'<br/>';
+
 			return 0;
 		}
 	}
@@ -25,18 +27,13 @@
 	 $e += val ("/[+][0-9]/",$lada,'Lada');
 	 $e += val ("/[0-9]/",$tel,'Telefono');
 	 if (filter_var($em, FILTER_VALIDATE_EMAIL)) {
-		 echo 'Email:<br/>'.$em.'<br/>';
-		} else {
-		 echo $em.' '.'no es un email valido <br/>';
-		 $e = $e + 1;
+    } else {
+        array_push($respuesta,  "Email invalido");
+        $e += 1;
 	}
 	$e += val ("/[A-Za-z0-9._%+-]/",$usu,'Usuario');
 	$e += val ("/([A-Za-z0-9]+|[\.]|[\=]|[\)]|[\(]|[\/]|[\&]|[\%]|[\$]|[\#]|[\!]|[\*]|[\+]|[\´]|[\~]|[\#]|[\_]|[\+]|[\{]|[\}]|[\|]|[\[]|[\]]|[\;]|[\:]|[\"]|[\<]|[\>]|[\?]|[\,][^(13245)|(qwert)|(asdfg)|(zxcv)|aaa|ooo|eee|iii|uuu][^ñ|á|í|ó|ú|ü|ö|Á|É|Í|Ó|Ú|Ü|Ö])+/",$pas,'Password');
-
-	 if ($e==0){
-		 echo "<a href='contraseñas.html'>Registrar contraseñas</a>";//pagina para registra contraseñas
-	 }else{
-		 echo "<a href='formulario.html'>Regresar al formulario</a>";
-	 }
+    $respuesta['errores'] = $e;
+    echo json_encode($respuesta);
 
 ?>
