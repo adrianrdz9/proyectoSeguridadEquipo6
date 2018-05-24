@@ -32,6 +32,7 @@
 	}
 	$e += val ("/[A-Za-z0-9._%+-]/",$usu,'Usuario');
 	$e += val ("/([A-Za-z0-9]+|[\.]|[\=]|[\)]|[\(]|[\/]|[\&]|[\%]|[\$]|[\#]|[\!]|[\*]|[\+]|[\´]|[\~]|[\#]|[\_]|[\+]|[\{]|[\}]|[\|]|[\[]|[\]]|[\;]|[\:]|[\"]|[\<]|[\>]|[\?]|[\,][^(13245)|(qwert)|(asdfg)|(zxcv)|aaa|ooo|eee|iii|uuu][^ñ|á|í|ó|ú|ü|ö|Á|É|Í|Ó|Ú|Ü|Ö])+/",$pas,'Password');
+
 	 if ($e==0){
 		 echo "<a href='contraseñas.html'>Registrar contraseñas</a>";//pagina para registra contraseñas
 	 }else{
