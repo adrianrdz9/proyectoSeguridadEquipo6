@@ -23,7 +23,7 @@ function cifrar($texto, $llave){
   foreach ($texto as $key => $value) {
     //El numero de caracteres que se va a desplazar el caracter
     //original 
-    $offset = $llave[$key] % ($largoLlave % 10);
+    $offset = $llave[$key] % ($largoLlave % 10 +1);
     $texto[$key] = chr(ord($value) + $offset);
   }
   //Convierte el array en string
@@ -51,7 +51,7 @@ function descifrar($cifrado, $llave){
   foreach ($cifrado as $key => $value) {
     //El numero de caracteres que se desplazo el caracter
     //original 
-    $offset = $llave[$key] % ($largoLlave % 10);
+    $offset = $llave[$key] % ($largoLlave % 10+1);
     $cifrado[$key] = chr(ord($value) - $offset);
   }
 
@@ -59,8 +59,4 @@ function descifrar($cifrado, $llave){
   return implode($cifrado);
 }
 
-$cifrado = cifrar("áéíóúaeiouAEIOU123789", "Super ultra mega llave bien chida");
-echo($cifrado);
-echo "<br>";
-echo descifrar($cifrado, "Super ultra mega llave bien chida");
 
