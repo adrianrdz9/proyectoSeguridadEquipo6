@@ -23,13 +23,16 @@ DROP TABLE IF EXISTS `servicio`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `servicio` (
-  `nombre` enum('facebook','twitter','google services','hotmail','github','spotify') NOT NULL,
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `nombre` char(60) NOT NULL,
   `referencia` char(255) DEFAULT NULL,
-  `contraseña` char(100) NOT NULL,
+  `contrasenia` char(100) NOT NULL,
   `id_usuario` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`),
   KEY `id_usuario` (`id_usuario`),
   CONSTRAINT `servicio_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -60,7 +63,7 @@ CREATE TABLE `usuario` (
   `contrasenia` char(100) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -81,4 +84,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-05-24 19:16:30
+-- Dump completed on 2018-05-25 18:56:28
