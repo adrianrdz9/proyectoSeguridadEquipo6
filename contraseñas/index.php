@@ -100,7 +100,7 @@
                         
                     </p>
                     <div class='card-footer text-muted'>
-                        <a href='./editar.php?q=". $el["id"] ."'>Editar</a>
+                        <a href='#' elId='".$el["id"] ."' class='editar'>Editar</a>
                     </div>
                 </div>
                 
@@ -111,6 +111,24 @@
 
 
 
+    </div>
+
+
+    <div class="modal" tabindex="-1" role="dialog" id='reingreso'>
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Reingresa tu contraseña</h5>
+            </div>
+            <div class="modal-body">
+                <form action="./editar.php" id="reingresoF" method="POST">
+                    <input type="password" name="pw" class='form-control' placeholder="Contraseña">
+                    <input type="hidden" name="q" id="q">
+                    <input type="submit" value="Continuar" class="btn">
+                </form>
+            </div>
+            </div>
+        </div>
     </div>
     
 
@@ -151,7 +169,17 @@
                 $(pw).prop('disabled', true);
             })
         })
-	
+
+        document.querySelectorAll(".editar").forEach(function(el){
+            el.addEventListener("click", function(ev){
+                ev.preventDefault();
+                $('#q').val($(ev.target).attr('elId') );
+                $('#reingreso').modal();
+            })
+        })
+        
+        
+
 	</script>
 
 </body>
