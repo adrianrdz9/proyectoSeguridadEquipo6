@@ -1,6 +1,6 @@
 <?php
     if( empty( $_COOKIE[md5('id')] )   ){
-        header("Location: ./formulario.html");
+        header("Location: ./formulario.php");
     }
 
     include('./cifrado.php');
@@ -45,7 +45,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="./">
             <img src="./logo.png" alt="Logo" width="120">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,13 +54,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item mr-4">
-                    <a class="nav-link" href="#">Inicio</a>
+                    <a class="nav-link" href="./">Inicio</a>
                 </li>
                 <li class="nav-item mr-4">
-                    <a class="nav-link" href="#">Agregar contraseña</a>
+                    <a class="nav-link" href="./contraseñas/nuevo.php">Agregar contraseña</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Ver todas las contraseñas</a>
+                    <a class="nav-link" href="./contraseñas/">Ver todas las contraseñas</a>
                 </li>
             </ul>
             <ul class="navbar-nav">
