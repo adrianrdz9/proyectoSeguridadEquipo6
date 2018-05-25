@@ -9,23 +9,17 @@
 
     $bd = mysqli_connect('127.0.0.1', 'root', 'toor', 'gestor');
 
-
-    $query = "SELECT * FROM usuario WHERE id = ".$id;
+    $query = "SELECT servicio.nombre, servicio.referencia, servicio.contrasenia FROM usuario INNER JOIN servicio ON $id = servicio.id_usuario";
     $res = mysqli_query($bd, $query);
     $resultados = [];
     if($res){
         while($row = mysqli_fetch_assoc($res)){
+            $r = [];
             foreach ($row as $key => $val) {
-                $resultados[$key] = $val;
+                $r[$key] = $val;
             }
-        }
-
-        unset($resultados["id"]);
-        unset($resultados["contrasenia"]);
-
-        foreach ($resultados as $key => $value) {
-            if($key != "usuario")
-                $resultados[$key] = descifrar($value, $resultados["usuario"]);
+            array_push($resultados, $r);
+            
         }
     }
 
@@ -42,7 +36,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
 	<style>
-		#pw{
+		input{
 			border: 0;
 			background-color: transparent;
 			width: auto;
@@ -77,27 +71,38 @@
         </div>
     </nav>
     <div class="container">
-        <div class="card text-center mt-4">
-            <div class="card-header bg-info text-light">
-				Facebook
-			</div>
-            <div class="card-body">
-                <p><span class="font-weight-bold">Referencia: </span> Sin referencia.</p>
-				<p>
-					<span class="font-weight-bold mr-2">Contraseña: </span> 
-					<input type="password" disabled value="12345678" id="pw">
-					<div>
-						<button class="btn btn-sm" id="ver" >Ver</button>
-						<button class="btn btn-sm" id="copiar">Copiar</button>
-					</div>
-					
-				</p>
 
-            </div>
-            <div class="card-footer text-muted">
-                <a href="./editar.php">Editar</a>
-            </div>
-        </div>
+        <?php 
+            foreach ($resultados as $el) {
+                echo "
+                <div class='card text-center mt-4'>
+                    <div class='card-header bg-info text-light'>  
+                        ".$el['nombre']."
+                    </div>
+                    <p><span class='font-weight-bold'>Referencia: </span> 
+                        ".$el['referencia']."
+                    </p>
+                    <p>
+                        <span class='font-weight-bold mr-2'>Contraseña: </span> 
+                        <input type='password' disabled value='".$el['contrasenia']."' >
+                        <div class='buttons'>
+                            <button class='btn btn-sm ver'>Ver</button>
+                            <button class='btn btn-sm copiar'>Copiar</button>
+                        </div>
+                        
+                    </p>
+                    <div class='card-footer text-muted'>
+                        <a href='./editar.php'>Editar</a>
+                    </div>
+                </div>
+                
+                
+                ";
+            }
+        ?>
+
+
+
     </div>
     
 
@@ -106,33 +111,39 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 
 	<script>
-		$('#ver').on('click', function(){
-			if($('#pw').attr('type') == "password"){
-				$('#pw').attr('type', 'text');
-				$('#ver').html('Ocultar');
-			}else{
-				$('#pw').attr('type', 'password');
-				$('#ver').html('Ver');
-			}
-			
-		})
-		$('#copiar').on('click', function(){
-			s = $('#pw').attr('type');
-			$('#pw').attr('type', 'text');
-			$('#pw').prop('disabled', false);
+		document.querySelectorAll('.ver').forEach((el)=>{
+            $(el).on('click', function(ev){
+                let pw = $($(ev.target)[0]).parent().prev().children().last();
+                if($(pw).attr('type') == "password"){
+                    $(pw).attr('type', 'text');
+                    $(ev.target).html('Ocultar');
+                }else{
+                    $(pw).attr('type', 'password');
+                    $(ev.target).html('Ver');
+                }
+            })
+        })
 
-			$('#pw').select();
-			document.execCommand('copy');
-			$('#copiar').html('Copiado').prop('disabled', true);
-			setTimeout(() => {
-				$('#copiar').html('Copiar').prop('disabled', false);
-			}, 1000);
 
-			$('#pw').attr('type', s);
-			$('#pw').prop('disabled', true);
+        document.querySelectorAll('.copiar').forEach((el)=>{
+            $(el).on('click', function(ev){
+                let pw = $($(ev.target)[0]).parent().prev().children().last();
+                s = $(pw).attr('type');
+                $(pw).attr('type', 'text');
+                $(pw).prop('disabled', false);
 
-		});
+                $(pw).select();
+                document.execCommand('copy');
+                $(ev.target).html('Copiado').prop('disabled', true);
+                setTimeout(() => {
+                    $(ev.target).html('Copiar').prop('disabled', false);
+                }, 1000);
 
+                $(pw).attr('type', s);
+                $(pw).prop('disabled', true);
+            })
+        })
+	
 	</script>
 
 </body>
