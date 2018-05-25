@@ -1,76 +1,94 @@
 <?php
-	include('./cifrado.php');
-
-	function val($r,$s,$n){//funcion para validacion
-		if (!preg_match($r,$s)){
-			echo "Formato de $n invalido <br/>";
-			return 1;
-		}else{
-			echo $n.':'.' '.'<br/>'.$s.'<br/>';
-			return 0;
-		}
+    if(!empty( $_COOKIE[md5('id')] )   ){
+        header("Location: ./");
 	}
-	$e = 0;
-
-	//recibir los valores
-	 $nom = $_POST['nom'];
-	 $pat= $_POST['pat'];
-	 $mat= $_POST['mat'];
-	 $lada= $_POST['lada'];
-	 $tel= $_POST['tel'];
-	 $em= $_POST['em'];
-	 $usu= $_POST['usu'];
-	 $pas= $_POST['pas'];
-	 $e += val ("/[A-Za-z]/",$nom,'Nombre');
-	 $e += val ("/[A-Za-z]/",$pat,'ApellidoPaterno');
-	 $e += val ("/[A-Za-z]/",$mat,'ApellidoMaterno');
-	 $e += val ("/[+][0-9]/",$lada,'Lada');
-	 $e += val ("/[0-9]/",$tel,'Telefono');
-	 if (filter_var($em, FILTER_VALIDATE_EMAIL)) {
-		 echo 'Email:<br/>'.$em.'<br/>';
-		} else {
-		 echo $em.' '.'no es un email valido <br/>';
-		 $e = $e + 1;
-	}
-	$e += val ("/[A-Za-z0-9._%+-]/",$usu,'Usuario');
-	$e += val ("/([A-Za-z0-9]+|[\.]|[\=]|[\)]|[\(]|[\/]|[\&]|[\%]|[\$]|[\#]|[\!]|[\*]|[\+]|[\´]|[\~]|[\#]|[\_]|[\+]|[\{]|[\}]|[\|]|[\[]|[\]]|[\;]|[\:]|[\"]|[\<]|[\>]|[\?]|[\,][^(13245)|(qwert)|(asdfg)|(zxcv)|aaa|ooo|eee|iii|uuu][^ñ|á|í|ó|ú|ü|ö|Á|É|Í|Ó|Ú|Ü|Ö])+/",$pas,'Password');
-	 if ($e==0){
-		$usuario = $usu;
-		$nombre = cifrar($nom, $usuario);
-		$ap_pat = cifrar($pat, $usuario);
-		$ap_mat = cifrar($mat, $usuario);
-		$lada = cifrar($lada, $usuario);
-		$telefono = cifrar($tel, $usuario);
-		$email = cifrar($em, $usuario);
-		$contrasenia = md5($pas);
-
-		$bd = mysqli_connect('127.0.0.1', 'root', 'toor', 'gestor');
-
-
-		$usuario = mysqli_real_escape_string ($bd, $usuario);
-		$nombre = mysqli_real_escape_string ($bd, $nombre);
-		$ap_pat = mysqli_real_escape_string ($bd, $ap_pat);
-		$ap_mat = mysqli_real_escape_string ($bd, $ap_mat);
-		$lada = mysqli_real_escape_string ($bd, $lada);
-		$telefono = mysqli_real_escape_string ($bd, $telefono);
-		$email = mysqli_real_escape_string ($bd, $email);
-		$contrasenia = mysqli_real_escape_string ($bd, $contrasenia);
 	
-
-		$query = "INSERT INTO usuario(nombre, apellido_paterno, apellido_materno, lada, telefono, email, usuario, contrasenia)";
-		$query = $query .    " VALUES('$nombre', '$ap_pat', '$ap_mat', '$lada', '$telefono', '$email', '$usuario', '$contrasenia')";
-
-		if(!mysqli_query($bd, $query)){
-			echo "Error: ".$query."<br>". mysqli_error($bd);
-		}
-
-		$id = mysqli_insert_id($bd);
-		mysqli_close($bd);
-		setcookie(md5("id"), cifrar($id, "cookie"), 0, "/");
-		header('Location: ./');
-
-	}else{
-		 echo "<a href='formulario.html'>Regresar al formulario</a>";
-	 }
-
 ?>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Registro</title>
+	<meta charset="utf-8"/>
+</head>
+<body>
+	<form method='post' action='formularioP.php' id='form'>
+		Nombre: <br/>
+		<input type='text' name='nom' required pattern='[A-Za-z]+' title='Ingresa solo letras'/> <br/>
+		Apellido Paterno: <br/>
+		<input type='text' name='pat' required pattern='[A-Za-z]+' title='Ingresa solo letras' /> <br/>
+		Apellido Materno: <br/>
+		<input type='text' name='mat' required pattern='[A-Za-z]+' title='Ingresa solo letras' /> <br/>
+		Telefono: <br/>
+		<input type='text'name='lada' required pattern='[+]?\d{2}' maxlength='3' size='3' title='Lada Ejemplo: +52'/>
+		<input type='text'name='tel' required pattern='\d{10}' maxlength='10' size='10'title='Ingresa solo números (10 digitos)'/> <br/>
+		Email: <br/>
+		<input type='email' name='em' required pattern='[A-Za-z0-9._%+-]+@[a-z]+[.]?[a-z]+' title='Formato email'/> <br/>
+		Nombre de usuario: <br/>
+		<input type='text' name='usu' required pattern='[A-Za-z0-9._%+-]+'/><br/>
+		Contraseña:<br/>
+		<input type='password' name='pas' autocomplete='off' minlength='25' size='30'
+		required pattern='([A-Za-z0-9]+|[\.]|[\=]|[\)]|[\(]|[\/]|[\&]|[\%]|[\$]|[\#]
+		|[\!]|[\*]|[\+]|[\´]|[\~]|[\#]|[\_]|[\+]|[\{]|[\}]|[\|]|[\[]|[\]]|[\;]|
+		[\:]|[\"]|[\<]|[\>]|[\?]|[\,][^(13245)|(qwert)|(asdfg)|(zxcv)|aaa|ooo|eee|iii|uuu]
+		[^ñ|á|í|ó|ú|ü|ö|Á|É|Í|Ó|Ú|Ü|Ö])+'
+		title='Mayusculas, minusculas, número y caracteres espaciales'/> <br/>
+		<p><input type='submit' value='Enviar' id="enviar"/></p>
+		<div id="avisos">
+			<h1></h1>
+			<ul></ul>
+		</div>
+	</form>
+
+
+	<script>
+		document.querySelector('#enviar').addEventListener("click", function(ev){
+			var request = new XMLHttpRequest();
+
+			request.onreadystatechange = function(){
+				if(this.readyState == 4 && this.status == 200){
+					
+					var response = JSON.parse(this.responseText);
+					
+					if(response.errores <= 0){
+						document.querySelector('#form').submit();
+					}else{
+						var contenedor = document.querySelector('#avisos');
+						contenedor.getElementsByTagName('h1')[0].innerHTML = "Errores (" + response.errores + "):"
+						contenedor.getElementsByTagName('ul')[0]
+							.innerHTML = ""
+						for(var i = 0; i < response.errores; i++){
+							contenedor.getElementsByTagName('ul')[0]
+							.innerHTML += "<li>" + response[i] + "</li>";
+						}
+						
+					}
+				}
+			}
+
+			request.open('POST', './validacionAJAX.php', true);
+			request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			var datos = "";
+			document.querySelectorAll('input:not([type="submit"])').forEach((el, i, arr)=>{
+				datos += el.name;
+				datos += "=";
+				datos += encodeURIComponent(el.value);
+				if(arr[i+1]){
+					datos+="&";
+				}
+			})
+
+			
+			
+			request.send(datos);
+		
+			
+			
+			
+			ev.preventDefault();
+		})
+	</script>
+
+</body>
+</html>

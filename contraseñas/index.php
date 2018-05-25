@@ -1,6 +1,6 @@
 <?php
     if( empty( $_COOKIE[md5('id')] )   ){
-        header("Location: ./formulario.html");
+        header("Location: ../formulario.php");
     }
 
     include('../cifrado.php');
@@ -9,6 +9,15 @@
 
     $bd = mysqli_connect('127.0.0.1', 'root', 'toor', 'gestor');
 
+    $query = "SELECT user FROM usuario WHERE id=$id";
+    $res = mysqli_query($bd, $query);
+    $user = "";
+    if($res){
+        $row = mysqli_fetch_assoc($res);
+        $user = $row['user'];
+    }
+    
+
     $query = "SELECT servicio.nombre, servicio.referencia, servicio.contrasenia FROM usuario INNER JOIN servicio ON $id = servicio.id_usuario";
     $res = mysqli_query($bd, $query);
     $resultados = [];
@@ -16,14 +25,12 @@
         while($row = mysqli_fetch_assoc($res)){
             $r = [];
             foreach ($row as $key => $val) {
-                $r[$key] = $val;
+                $r[$key] = descifrar($val, $user);
             }
             array_push($resultados, $r);
             
         }
     }
-
-
 ?>
 
 
@@ -45,7 +52,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="../">
             <img src="../logo.png" alt="Logo" width="120">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,18 +61,18 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item mr-4">
-                    <a class="nav-link" href="#">Inicio</a>
+                    <a class="nav-link" href="../">Inicio</a>
                 </li>
                 <li class="nav-item mr-4">
-                    <a class="nav-link" href="#">Agregar contraseña</a>
+                    <a class="nav-link" href="./nuevo.php">Agregar contraseña</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="./contraseñas/">Ver todas las contraseñas</a>
+                    <a class="nav-link" href="./">Ver todas las contraseñas</a>
                 </li>
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a href="logout.php" class="nav-link">Cerrar sesion</a>
+                    <a href="../logout.php" class="nav-link">Cerrar sesion</a>
                 </li>
             </ul>
         </div>

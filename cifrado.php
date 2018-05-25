@@ -24,7 +24,7 @@ function cifrar($texto, $llave){
     //El numero de caracteres que se va a desplazar el caracter
     //original 
     $offset = $llave[$key] % ($largoLlave % 10 +1);
-    $texto[$key] = chr(ord($value) + $offset);
+    $texto[$key] = chr(ord($value) + $offset +1);
   }
   //Convierte el array en string
   return implode($texto);
@@ -52,7 +52,7 @@ function descifrar($cifrado, $llave){
     //El numero de caracteres que se desplazo el caracter
     //original 
     $offset = $llave[$key] % ($largoLlave % 10+1);
-    $cifrado[$key] = chr(ord($value) - $offset);
+    $cifrado[$key] = chr(ord($value) - ($offset +1));
   }
 
   //Convierte el array en string

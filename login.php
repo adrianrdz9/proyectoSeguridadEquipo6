@@ -1,32 +1,23 @@
 <?php
-    include('./cifrado.php');
-    $usuario = $_POST['usu'];
-    $password = $_POST['pas'];
-
-    $bd = mysqli_connect('127.0.0.1', 'root', 'toor', 'gestor');
-
-    $usuario = mysqli_real_escape_string ($bd, $usuario);
-    $password = mysqli_real_escape_string($bd, md5($password));
-
-    $query = "SELECT id FROM usuario WHERE usuario = '".$usuario."'";
-    $query = $query . " AND contrasenia = '".$password."'";
-    $res = mysqli_query($bd, $query);
-    if($res){
-        while($row = mysqli_fetch_assoc($res)){
-            foreach ($row as $key => $val) {
-                $id = $val;
-            }
-        }
-
-        if(empty($id)){
-            echo "<script>alert('Usuario o contraseña incorrectos');window.location.replace('./login.html')</script>";
-        }else{
-            setcookie(md5("id"), cifrar($id, 'cookie'), 0, "/");
-            header("Location: ./");
-        }
+    if(!empty( $_COOKIE[md5('id')] )   ){
+        header("Location: ./");
     }
-
-
-
-
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Iniciar sesion</title>
+	<meta charset="utf-8"/>
+</head>
+<body>
+	<form method='post' action='loginP.php' id='form'>
+		Nombre de usuario: <br/>
+		<input type='text' name='usu' required placeholder='Usuario'/><br/>
+		Contraseña:<br/>
+		<input type='password' name='pas' autocomplete='off' minlength='25' size='30'
+		required placeholder="Contraseña"/> <br/>
+		<p><input type='submit' value='Enviar' id="enviar"/></p>
+	</form>
+
+</body>
+</html>
