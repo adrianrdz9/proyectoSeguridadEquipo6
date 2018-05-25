@@ -1,11 +1,35 @@
 <?php
-    if( empty( $_COOKIE[md5('usuario')] )   ){
+    if( empty( $_COOKIE[md5('id')] )   ){
         header("Location: ./formulario.html");
     }
 
     include('./cifrado.php');
 
-    $usuario =  descifrar($_COOKIE[md5('usuario')], 'cookie');
+    $id =  descifrar($_COOKIE[md5('id')], 'cookie');
+
+    $bd = mysqli_connect('127.0.0.1', 'root', 'toor', 'gestor');
+
+
+    $query = "SELECT * FROM usuario WHERE id = ".$id;
+    $res = mysqli_query($bd, $query);
+    $resultados = [];
+    if($res){
+        while($row = mysqli_fetch_assoc($res)){
+            foreach ($row as $key => $val) {
+                $resultados[$key] = $val;
+            }
+        }
+
+        unset($resultados["id"]);
+        unset($resultados["contrasenia"]);
+
+        foreach ($resultados as $key => $value) {
+            if($key != "usuario")
+                $resultados[$key] = descifrar($value, $resultados["usuario"]);
+        }
+    }
+
+
 ?>
 
 
@@ -52,13 +76,13 @@
                 Datos personales
             </div>
             <div class="card-body">
-                <p><span class="font-weight-bold">Nombre: </span>Nombre</p>
-                <p><span class="font-weight-bold">Apellido paterno: </span>Apellido paterno</p>
-                <p><span class="font-weight-bold">Apellido materno: </span>Apellido materno</p>
-                <p><span class="font-weight-bold">Lada: </span>Lada</p>
-                <p><span class="font-weight-bold">Telefono: </span>Telefono</p>
-                <p><span class="font-weight-bold">Usuario: </span>Usuario</p>
-
+                <p><span class="font-weight-bold">Nombre: </span><?php echo $resultados["nombre"] ?></p>
+                <p><span class="font-weight-bold">Apellido paterno: </span><?php echo $resultados["apellido_paterno"] ?></p>
+                <p><span class="font-weight-bold">Apellido materno: </span><?php echo $resultados["apellido_materno"] ?></p>
+                <p><span class="font-weight-bold">Lada: </span><?php echo $resultados["lada"] ?></p>
+                <p><span class="font-weight-bold">Telefono: </span><?php echo $resultados["telefono"] ?></p>
+                <p><span class="font-weight-bold">Usuario: </span><?php echo $resultados["usuario"] ?></p>
+                
             </div>
             <div class="card-footer text-muted">
                 <a href="./editar.php">Editar</a>

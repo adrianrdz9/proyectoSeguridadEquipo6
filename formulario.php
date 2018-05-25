@@ -44,14 +44,30 @@
 		$email = cifrar($em, $usuario);
 		$contrasenia = md5($pas);
 
-		echo $nombre . "<br>";
-		$query = "INSERT INTO usuario(nombre, apellido_paterno, apellido_materno, lada, telefono, email, usuario, contraseña)";
-		$query = $query .    " VALUES($nombre, $ap_pat, $ap_mat, $lada, $telefono, $email, $usuario, $contrasenia)";
+		$bd = mysqli_connect('127.0.0.1', 'root', 'toor', 'gestor');
 
-		echo $query;
 
-		setcookie(md5("usuario"), cifrar($usuario, "cookie"), 0, "/");
-		header("Location: ./");
+		$usuario = mysqli_real_escape_string ($bd, $usuario);
+		$nombre = mysqli_real_escape_string ($bd, $nombre);
+		$ap_pat = mysqli_real_escape_string ($bd, $ap_pat);
+		$ap_mat = mysqli_real_escape_string ($bd, $ap_mat);
+		$lada = mysqli_real_escape_string ($bd, $lada);
+		$telefono = mysqli_real_escape_string ($bd, $telefono);
+		$email = mysqli_real_escape_string ($bd, $email);
+		$contrasenia = mysqli_real_escape_string ($bd, $contrasenia);
+	
+
+		$query = "INSERT INTO usuario(nombre, apellido_paterno, apellido_materno, lada, telefono, email, usuario, contrasenia)";
+		$query = $query .    " VALUES('$nombre', '$ap_pat', '$ap_mat', '$lada', '$telefono', '$email', '$usuario', '$contrasenia')";
+
+		if(!mysqli_query($bd, $query)){
+			echo "Error: ".$query."<br>". mysqli_error($bd);
+		}
+
+		$id = mysqli_insert_id($bd);
+		mysqli_close($bd);
+		setcookie(md5("id"), cifrar($id, "cookie"), 0, "/");
+		header('Location: ./');
 
 	}else{
 		 echo "<a href='formulario.html'>Regresar al formulario</a>";
