@@ -9,23 +9,24 @@
 
     $bd = mysqli_connect('127.0.0.1', 'root', 'toor', 'gestor');
 
-    $query = "SELECT user FROM usuario WHERE id=$id";
+    $query = "SELECT usuario FROM usuario WHERE id=$id";
     $res = mysqli_query($bd, $query);
     $user = "";
     if($res){
         $row = mysqli_fetch_assoc($res);
-        $user = $row['user'];
+        $user = $row['usuario'];
     }
-    
-
-    $query = "SELECT servicio.nombre, servicio.referencia, servicio.contrasenia FROM usuario INNER JOIN servicio ON $id = servicio.id_usuario";
+    $query = "SELECT servicio.id, servicio.nombre, servicio.referencia, servicio.contrasenia FROM usuario INNER JOIN servicio ON $id = servicio.id_usuario";
     $res = mysqli_query($bd, $query);
     $resultados = [];
     if($res){
         while($row = mysqli_fetch_assoc($res)){
             $r = [];
             foreach ($row as $key => $val) {
-                $r[$key] = descifrar($val, $user);
+                if($key == 'id')
+                    $r[$key] = $val;
+                else
+                    $r[$key] = descifrar($val, $user);
             }
             array_push($resultados, $r);
             
@@ -46,7 +47,7 @@
 		input{
 			border: 0;
 			background-color: transparent;
-			width: auto;
+            font-size: 0.8em;
 		}
 	</style>
 </head>
@@ -91,7 +92,7 @@
                     </p>
                     <p>
                         <span class='font-weight-bold mr-2'>Contraseña: </span> 
-                        <input type='password' disabled value='".$el['contrasenia']."' >
+                        <input type='password' class='w-75' disabled value='".$el['contrasenia']."' >
                         <div class='buttons'>
                             <button class='btn btn-sm ver'>Ver</button>
                             <button class='btn btn-sm copiar'>Copiar</button>
@@ -99,7 +100,7 @@
                         
                     </p>
                     <div class='card-footer text-muted'>
-                        <a href='./editar.php'>Editar</a>
+                        <a href='./editar.php?q=". $el["id"] ."'>Editar</a>
                     </div>
                 </div>
                 

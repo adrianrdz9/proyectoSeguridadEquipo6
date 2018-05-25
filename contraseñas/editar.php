@@ -1,8 +1,45 @@
 <?php
-    if( empty( $_COOKIE[md5('id')] )   ){
-        header("Location: ../formulario.php");
+    if( empty( $_COOKIE[md5('id')] )  || !isset($_GET["q"]) ){
+        header("Location: ./");
     }
+    include('../cifrado.php');
+
+    $id =  descifrar($_COOKIE[md5('id')], 'cookie');
+
+    $bd = mysqli_connect('127.0.0.1', 'root', 'toor', 'gestor');
+
+    $query = "SELECT usuario FROM usuario WHERE id=$id";
+    $res = mysqli_query($bd, $query);
+    $user = "";
+    if($res){
+        $row = mysqli_fetch_assoc($res);
+        $user = $row['usuario'];
+    }else{
+        echo 'Error';
+    }
+
+
+    $id_servicio = $_GET["q"];
+    $query = "SELECT * FROM servicio WHERE id=$id_servicio";
+    $res = mysqli_query($bd, $query);
+    $user = "";
+    if($res){
+        $row = mysqli_fetch_assoc($res);
+        $servicio = $row;
+    }
+
+    if($servicio['id_usuario'] != $id){
+        header("Location: ./");
+    }
+
+
+    foreach ($servicio as $key => $value) {
+        if($key != 'id')     
+            $servicio[$key] = descifrar($value, $user);
+    }
+
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -48,26 +85,33 @@
         </div>
     </nav>
     <div class="container">
+
         <div class='card text-center mt-4'>
             <div class='card-header bg-info text-light'>  
                 Nueva contraseña
             </div>
-            <form action="./nueva.php" method="POST" class="mt-4" id="form">
+            <form action="./actualizar.php" method="POST" class="mt-4" id="form">
+                <input type="hidden" name="q" value="<?php echo $servicio["id"]; ?>">
                 <div class="form-group w-75 m-auto">
                     <label for="service">Servicio</label>
                     <select name="service" id="service" class="custom-select">
-                        <option value="facebook">Facebook</option>
-                        <option value="twitter">Twitter</option>
-                        <option value="google_services">Google Services</option>
-                        <option value="hotmail">Hotmail</option>
-                        <option value="github">Github</option>
-                        <option value="spotify">Spotify</option>
+                        <?php
+                            $s = ["facebook", "twitter", "google_services", "hotmail", "github", "spotify"];
+                            foreach ($s as $val) {
+                                if($val == $servicio['nombre']){
+                                    echo "<option value='$val' selected>$val</option>";
+                                }else{
+                                    echo "<option value='$val'>$val</option>";
+                                }
+                            }
+                        ?>
                     </select>
                 </div>
 
                 <div class="form-group w-75 m-auto">
                     <label for="reference" class="mt-2">Referencia - opcional</label>
-                    <input type="text" class="form-control" name="reference" id="reference">
+                    <input type="text" class="form-control" name="reference" id="reference"
+                    value="<?php echo $servicio['referencia']; ?>">
                     <small class="form-text text-muted">Una forma de saber a que cuenta corresponde esta esta contraseña</small>
                 </div>
 
@@ -77,9 +121,11 @@
                     pattern='([A-Za-z0-9]+|[\.]|[\=]|[\)]|[\(]|[\/]|[\&]|[\%]|[\$]|[\#]
                     |[\!]|[\*]|[\+]|[\´]|[\~]|[\#]|[\_]|[\+]|[\{]|[\}]|[\|]|[\[]|[\]]|[\;]|
                     [\:]|[\"]|[\<]|[\>]|[\?]|[\,][^(13245)|(qwert)|(asdfg)|(zxcv)|aaa|ooo|eee|iii|uuu]
-                    [^ñ|á|í|ó|ú|ü|ö|Á|É|Í|Ó|Ú|Ü|Ö])+'>
+                    [^ñ|á|í|ó|ú|ü|ö|Á|É|Í|Ó|Ú|Ü|Ö])+' value="<?php echo $servicio['contrasenia']; ?>">
                     <div class="w-25 d-inline">
-                        <button class="btn d-inline" id="generar">Generar</button>
+                        <button class="btn" id="generar">Generar</button>
+                        <button id='ver' class='btn btn-link d-inline'>Ver</button>
+
                     </div>
                     <small class="form-text text-muted mb-4">
                         Minimo 25 caracteres, por lo menos una letra mayuscula, una letra minuscula, un numero, un simbolo, sin caracteres  latinos y sin sucesiones logicas (ej. 12345). 
@@ -98,6 +144,7 @@
              
 
 
+
     </div>
     
 
@@ -106,6 +153,37 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 
 	<script>
+		$('#ver').on('click', function(ev){
+            let pw = $('#password');
+            if($(pw).attr('type') == "password"){
+                $(pw).attr('type', 'text');
+                $(ev.target).html('Ocultar');
+            }else{
+                $(pw).attr('type', 'password');
+                $(ev.target).html('Ver');
+            }
+            ev.preventDefault();
+        })
+
+        $('#generar').on('click', function(ev){
+            var request = new XMLHttpRequest();
+
+			request.onreadystatechange = function(){
+				if(this.readyState == 4 && this.status == 200){
+					
+					var response = this.responseText;
+					
+					$("#password").val(response).attr("type", "text")
+				}
+			}
+
+			request.open('GET', './generador.php', true);			
+			
+			request.send();
+			
+			ev.preventDefault();
+        })
+        
         document.querySelector('#enviar').addEventListener("click", function(ev){
             var request = new XMLHttpRequest();
 
@@ -135,7 +213,7 @@
                 }
             }
 
-            request.open('POST', './nueva.php', true);
+            request.open('POST', './actualizar.php', true);
             request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             var datos = "";
             document.querySelectorAll('input:not([type="submit"])').forEach((el, i, arr)=>{
@@ -155,30 +233,8 @@
             
             ev.preventDefault();
         })
-
-
-        $('#generar').on('click', function(ev){
-            var request = new XMLHttpRequest();
-
-			request.onreadystatechange = function(){
-				if(this.readyState == 4 && this.status == 200){
-					
-					var response = this.responseText;
-					
-					$("#password").val(response).attr("type", "text");
-                    setTimeout(() => {
-                        $("#password").attr("type", "password");
-                    }, 5000);
-				}
-			}
-
-			request.open('GET', './generador.php', true);			
-			
-			request.send();
-			
-			ev.preventDefault();
-        })
-    </script>
+	
+	</script>
 
 </body>
 </html>
