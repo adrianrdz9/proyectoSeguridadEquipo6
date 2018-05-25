@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <title>Contraseñas</title>
+    <meta charset="utf-8"/>
+  </head>
+  <body onload="re()">
+    <h1>Registro de contraseñas</h1>
+    <p>Puedes aceptar las contrañeas que se generen y modificarlas como mejor te parezca y/o agregar tus propias contraseñas</p>
+    <form method="post" action="contra.php">
+      <p>
+        Facebook:
+        <input id ='f' type='text' name='f' minlength='25' size='30'pattern="[A-Za-z0-9.=\/&%$#!°();:,´<>?~^*+_{}|]+">
+        <input type="button" value="Obtener" onclick="contra('f')">
+     </p>
+     <p>
+       Twitter:
+       <input id ='t'type='text' name='t' minlength='25'size='30'pattern="[A-Za-z0-9.=\/&%$#!°();:,´<>?~^*+_{}|]+">
+       <input type="button" value="Obtener" onclick="contra('t')">
+     </p>
+    <p>
+      Google Services:
+      <input id ='GS' type='text' name='GS' minlength='25'size='30'pattern="[A-Za-z0-9.=\/&%$#!°();:,´<>?~^*+_{}|]+">
+      <input type="button" value="Obtener" onclick="contra('GS')">
+    </p>
+    <p>
+      Hotmail:
+      <input id ='H'type='text' name='H'minlength='25' size='30'pattern="[A-Za-z0-9.=\/&%$#!°();:,´<>?~^*+_{}|]+">
+      <input type="button" value="Obtener" onclick="contra('H')">
+    </p>
+    <p>
+      GitHub:
+      <input  id ='GH' type='text' name='GH'minlength='25' size='30'pattern="[A-Za-z0-9.=\/&%$#!°();:,´<>?~^*+_{}|]+">
+      <input type="button" value="Obtener" onclick="contra('GH')">
+    </p>
+    <p>
+      Spotify:
+      <input id ='S' type='text' name='S'minlength='25' size='30'pattern="[A-Za-z0-9.=\/&%$#!°();:,´<>?~^*+_{}|]+">
+      <input type="button" value="Obtener" onclick="contra('S')">
+    </p>
+    <p><input type='submit' value='Enviar'/></p>
+    </from>
+  </body>
+  <script>
+  var con = [];
+   function contra(id){
+     var le = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p",
+              "#","~","$","%","(",")","=","*","+","q","r","s","t","u","v","w","x",
+              "y","z","1","2","3","4","5","6","7","8","9","0","A","B","C","D","E",
+              "F","G","H","I","J","K","L","M","N","O","P","Q","R","S","T","K","e",
+              "a","b","c","d","e","f","g","h","i","j","k","U","V","W","X","Y","Z",
+              "|","#","~","$","%","(",")","=","*","+","7","8","9","0","A","B","C",
+              "D","E","F","G","H","I","[","]","{","}","-","_","!","&","/","i","^",
+              ":",";",",","´","<",">","?"];
+     for (var c = 0; c < 27 ; c++){
+        var es = Math.floor((Math.random() * 90));
+         con[c] = le[es];
+         var x = con.join('');
+         document.getElementById(id).value = x;
+     }
+   }
+   function re(){
+     setInterval(function(){
+        alert("El tiempo limite se agoto, intenta de nuevo");
+        location.reload();
+      }, 180000);
+   }
+  </script>
+</html>
