@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Registro</title>
+	<meta charset="utf-8"/>
+	<link rel="stylesheet" href="vista_registro.css">
+	<link href="https://fonts.googleapis.com/css?family=Nunito|Playfair+Display" rel="stylesheet">
+</head>
+<body>
+	<img src="JUVIMA.png">
+	<p id='reg'>Registrarse</p>
+	<div id='form'>
+	<form method='post' action='vista_registro.php'>
+		Nombre <br/>
+		<input type='text' name='nom' required pattern='[A-Za-z]+' title='Ingresa solo letras'/> <br/>
+		Apellido Paterno <br/>
+		<input type='text' name='pat' required pattern='[A-Za-z]+' title='Ingresa solo letras' /> <br/>
+		Apellido Materno <br/>
+		<input type='text' name='mat' required pattern='[A-Za-z]+' title='Ingresa solo letras' /> <br/>
+		Telefono (con Lada)  <br/>
+
+		<input id='lada' type='text'name='lada' required pattern='[+]?\d{2}' maxlength='3' size='3' title='Lada Ejemplo: +52'/>
+		<input id='tel' type='text'name='tel' required pattern='\d{10}' maxlength='10' size='10'title='Ingresa solo números (10 digitos)'/> <br/>
+		Email <br/>
+		<input type='email' name='em' required pattern='[A-Za-z0-9._%+-]+@[a-z]+[.]?[a-z]+' title='Formato email'/> <br/>
+		Nombre de usuario <br/>
+		<input type='text' name='usu' required pattern='[A-Za-z0-9._%+-]+'/><br/>
+		Contraseña<br/>
+		<input type='password' name='pas' autocomplete='off' minlength='25' size='30'
+		required pattern='([A-Za-z0-9]+|[\.]|[\=]|[\)]|[\(]|[\/]|[\&]|[\%]|[\$]|[\#]
+		|[\!]|[\*]|[\+]|[\´]|[\~]|[\#]|[\_]|[\+]|[\{]|[\}]|[\|]|[\[]|[\]]|[\;]|
+		[\:]|[\"]|[\<]|[\>]|[\?]|[\,][^(13245)|(qwert)|(asdfg)|(zxcv)|aaa|ooo|eee|iii|uuu]
+		[^ñ|á|í|ó|ú|ü|ö|Á|É|Í|Ó|Ú|Ü|Ö])+'
+		title='Mayusculas, minusculas, número y caracteres espaciales'/> <br/> <br/> <br/>
+		<input id='submit' type="submit"  value='Registrarse' style="width:auto;" border-radius: 5px;></input>
+
+	</form>
+	</div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Ingreso</title>
+		<link rel="stylesheet" href="vista_registro.css">
+		<meta charset="utf-8"/>
+	</head>
+	<body>
+		<img src="JUVIMA.png">
+		<p id='reg'>Iniciar sesión</p>
+		<div id='form'>
+		 <form class="form" action="ingreso.php">
+
+    		Nombre de usuario <br/>
+				<input type='text' name='usu' required pattern='[A-Za-z0-9._%+-]+'/><br/>
+			Contraseña <br/>
+				<input type='password' name='pas' autocomplete='off' minlength='25' size='30'
+				required pattern='([A-Za-z0-9]+|[\.]|[\=]|[\)]|[\(]|[\/]|[\&]|[\%]|[\$]|[\#]
+				|[\!]|[\*]|[\+]|[\´]|[\~]|[\#]|[\_]|[\+]|[\{]|[\}]|[\|]|[\[]|[\]]|[\;]|
+				[\:]|[\"]|[\<]|[\>]|[\?]|[\,][^(13245)|(qwert)|(asdfg)|(zxcv)|aaa|ooo|eee|iii|uuu]
+				[^ñ|á|í|ó|ú|ü|ö|Á|É|Í|Ó|Ú|Ü|Ö])+'
+				title='Mayusculas, minusculas, número y caracteres espaciales'/> <br/> 
+				<input id='submit' type="submit"  value='Ingresar' style="margin-left: 0px; margin-top: 10px; border-radius: 5px;"></input>
+		</form>
+    	</div>
+	</body>
+</html>

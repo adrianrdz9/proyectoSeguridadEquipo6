@@ -1,0 +1,62 @@
+body{
+	background-color: lightblue;
+	margin: 0 0 0 0;
+}
+img{
+
+	 width: 100px; height: 60px;
+	margin-left: 28%;
+}
+p{
+	text-align: center;
+	float: right;
+	margin-right:43%;
+	color: white;
+	font-family: 'Nunito', sans-serif;
+	margin-top: 0px;
+	font-size: xx-large;
+}
+div#form{
+	width: 25%;
+	height: 105vh;
+	margin: 20px 0 0 28%;
+	padding-right: 190px;
+	padding-top: 30px;
+	padding-left: 3%;
+	background-color: white;
+}
+form{
+	width: 150%;
+}
+input#submit{
+    background-color: lightblue;
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    display: list-item;
+    font-size: large;
+    padding-bottom:40px;
+    height: 4px;
+    margin-left: 160px;
+}
+
+input#submit:hover {
+    opacity: 0.8;
+}
+input[type=text], input[type=email], input[type=password]{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+input[type=text]#lada{
+	width: 15%;
+}
+input[type=text]#tel{
+	width: 84%;
+}
