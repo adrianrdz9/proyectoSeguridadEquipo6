@@ -3,7 +3,7 @@
         header("Location: ./formulario.html");
     }
 
-    include('./cifrado.php');
+    include('../cifrado.php');
 
     $id =  descifrar($_COOKIE[md5('id')], 'cookie');
 
@@ -41,12 +41,18 @@
     <title>Inicio</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
-
+	<style>
+		#pw{
+			border: 0;
+			background-color: transparent;
+			width: auto;
+		}
+	</style>
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <a class="navbar-brand" href="#">
-            <img src="./logo.png" alt="Logo" width="120">
+            <img src="../logo.png" alt="Logo" width="120">
         </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -73,16 +79,20 @@
     <div class="container">
         <div class="card text-center mt-4">
             <div class="card-header bg-info text-light">
-                Datos personales
-            </div>
+				Facebook
+			</div>
             <div class="card-body">
-                <p><span class="font-weight-bold">Nombre: </span><?php echo $resultados["nombre"] ?></p>
-                <p><span class="font-weight-bold">Apellido paterno: </span><?php echo $resultados["apellido_paterno"] ?></p>
-                <p><span class="font-weight-bold">Apellido materno: </span><?php echo $resultados["apellido_materno"] ?></p>
-                <p><span class="font-weight-bold">Lada: </span><?php echo $resultados["lada"] ?></p>
-                <p><span class="font-weight-bold">Telefono: </span><?php echo $resultados["telefono"] ?></p>
-                <p><span class="font-weight-bold">Usuario: </span><?php echo $resultados["usuario"] ?></p>
-                
+                <p><span class="font-weight-bold">Referencia: </span> Sin referencia.</p>
+				<p>
+					<span class="font-weight-bold mr-2">Contraseña: </span> 
+					<input type="password" disabled value="12345678" id="pw">
+					<div>
+						<button class="btn btn-sm" id="ver" >Ver</button>
+						<button class="btn btn-sm" id="copiar">Copiar</button>
+					</div>
+					
+				</p>
+
             </div>
             <div class="card-footer text-muted">
                 <a href="./editar.php">Editar</a>
@@ -94,5 +104,36 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+	<script>
+		$('#ver').on('click', function(){
+			if($('#pw').attr('type') == "password"){
+				$('#pw').attr('type', 'text');
+				$('#ver').html('Ocultar');
+			}else{
+				$('#pw').attr('type', 'password');
+				$('#ver').html('Ver');
+			}
+			
+		})
+		$('#copiar').on('click', function(){
+			s = $('#pw').attr('type');
+			$('#pw').attr('type', 'text');
+			$('#pw').prop('disabled', false);
+
+			$('#pw').select();
+			document.execCommand('copy');
+			$('#copiar').html('Copiado').prop('disabled', true);
+			setTimeout(() => {
+				$('#copiar').html('Copiar').prop('disabled', false);
+			}, 1000);
+
+			$('#pw').attr('type', s);
+			$('#pw').prop('disabled', true);
+
+		});
+
+	</script>
+
 </body>
 </html>
