@@ -1,6 +1,6 @@
 <?php
-    if( empty( $_COOKIE[md5('id')] )  || !isset($_GET["q"]) ){
-        header("Location: ./");
+    if( empty( $_COOKIE[md5('id')] )  || !isset($_POST["q"]) ){
+        //header("Location: ./");
     }
     include('../cifrado.php');
 
@@ -8,28 +8,31 @@
 
     $bd = mysqli_connect('127.0.0.1', 'root', 'toor', 'gestor');
 
-    $query = "SELECT usuario FROM usuario WHERE id=$id";
+    $query = "SELECT contrasenia FROM usuario WHERE id=$id";
     $res = mysqli_query($bd, $query);
     $user = "";
     if($res){
         $row = mysqli_fetch_assoc($res);
-        $user = $row['usuario'];
-    }else{
-        echo 'Error';
+        $user = $row;
+    }
+
+    if(md5($_POST['pw']) != $user['contrasenia'] ){
+        header('Location: ./');
     }
 
 
-    $id_servicio = $_GET["q"];
+    $id_servicio = $_POST["q"];
     $query = "SELECT * FROM servicio WHERE id=$id_servicio";
     $res = mysqli_query($bd, $query);
     $user = "";
+    $servicio = [];
     if($res){
         $row = mysqli_fetch_assoc($res);
         $servicio = $row;
     }
 
     if($servicio['id_usuario'] != $id){
-        header("Location: ./");
+        //header("Location: ./");
     }
 
 
