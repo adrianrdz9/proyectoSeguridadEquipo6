@@ -19,7 +19,7 @@
         }
 
         if(empty($id)){
-            echo "<script>alert('Usuario o contraseña incorrectos');window.location.replace('./login.html')</script>";
+            echo "<script>alert('Usuario o contraseña incorrectos');window.location.replace('./login.php')</script>";
         }else{
             setcookie(md5("id"), cifrar($id, 'cookie'), 0, "/");
             header("Location: ./");
