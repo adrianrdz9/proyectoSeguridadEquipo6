@@ -1,5 +1,5 @@
 Repositiorio del proyecto final de seguridad
-=>Página Inicial a ejecutar: Vista_inicial.html. 
+=>Página Inicial a ejecutar: Vista_inicial2.html. 
 Requerimientos:
 -Base de datos con:
   -Nombre: gestor
