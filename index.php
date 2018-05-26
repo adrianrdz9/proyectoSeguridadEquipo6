@@ -84,9 +84,6 @@
                 <p><span class="font-weight-bold">Usuario: </span><?php echo $resultados["usuario"] ?></p>
                 
             </div>
-            <div class="card-footer text-muted">
-                <a href="./editar.php">Editar</a>
-            </div>
         </div>
     </div>
     

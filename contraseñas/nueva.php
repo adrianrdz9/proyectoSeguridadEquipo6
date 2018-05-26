@@ -24,13 +24,14 @@
         $id =  descifrar($_COOKIE[md5('id')], 'cookie');
     
         $bd = mysqli_connect('127.0.0.1', 'root', 'toor', 'gestor');
-
-        $query = "SELECT username FROM usuario WHERE id = ".$id;
+        echo $id;
+        $query = "SELECT usuario FROM usuario WHERE id = ".$id;
         $res = mysqli_query($bd, $query);
         $username = "";
         if($res){
             $row = mysqli_fetch_assoc($res);
             $username = $row["usuario"];
+            print_r($row);
         }
 
         $nombre = $_POST["service"];

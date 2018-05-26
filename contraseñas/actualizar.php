@@ -25,7 +25,7 @@
     
         $bd = mysqli_connect('127.0.0.1', 'root', 'toor', 'gestor');
 
-        $query = "SELECT username FROM usuario WHERE id = ".$id;
+        $query = "SELECT usuario FROM usuario WHERE id = ".$id;
         $res = mysqli_query($bd, $query);
         $username = "";
         if($res){

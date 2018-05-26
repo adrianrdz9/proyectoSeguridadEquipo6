@@ -1,6 +1,6 @@
 <?php
     if( empty( $_COOKIE[md5('id')] )  || !isset($_POST["q"]) ){
-        //header("Location: ./");
+        header("Location: ./");
     }
     include('../cifrado.php');
 
@@ -8,9 +8,9 @@
 
     $bd = mysqli_connect('127.0.0.1', 'root', 'toor', 'gestor');
 
-    $query = "SELECT contrasenia FROM usuario WHERE id=$id";
+    $query = "SELECT contrasenia, usuario FROM usuario WHERE id=$id";
     $res = mysqli_query($bd, $query);
-    $user = "";
+    $user = [];
     if($res){
         $row = mysqli_fetch_assoc($res);
         $user = $row;
@@ -21,10 +21,10 @@
     }
 
 
+
     $id_servicio = $_POST["q"];
     $query = "SELECT * FROM servicio WHERE id=$id_servicio";
     $res = mysqli_query($bd, $query);
-    $user = "";
     $servicio = [];
     if($res){
         $row = mysqli_fetch_assoc($res);
@@ -32,13 +32,12 @@
     }
 
     if($servicio['id_usuario'] != $id){
-        //header("Location: ./");
+        header("Location: ./");
     }
-
 
     foreach ($servicio as $key => $value) {
         if($key != 'id')     
-            $servicio[$key] = descifrar($value, $user);
+            $servicio[$key] = descifrar($value, $user['usuario']);
     }
 
 ?>
@@ -94,7 +93,7 @@
                 Nueva contraseña
             </div>
             <form action="./actualizar.php" method="POST" class="mt-4" id="form">
-                <input type="hidden" name="q" value="<?php echo $servicio["id"]; ?>">
+                <input type="hidden" name="q" value="<?php echo $servicio["id"];?>">
                 <div class="form-group w-75 m-auto">
                     <label for="service">Servicio</label>
                     <select name="service" id="service" class="custom-select">
@@ -124,7 +123,7 @@
                     pattern='([A-Za-z0-9]+|[\.]|[\=]|[\)]|[\(]|[\/]|[\&]|[\%]|[\$]|[\#]
                     |[\!]|[\*]|[\+]|[\´]|[\~]|[\#]|[\_]|[\+]|[\{]|[\}]|[\|]|[\[]|[\]]|[\;]|
                     [\:]|[\"]|[\<]|[\>]|[\?]|[\,][^(13245)|(qwert)|(asdfg)|(zxcv)|aaa|ooo|eee|iii|uuu]
-                    [^ñ|á|í|ó|ú|ü|ö|Á|É|Í|Ó|Ú|Ü|Ö])+' value="<?php echo $servicio['contrasenia']; ?>">
+                    [^ñ|á|í|ó|ú|ü|ö|Á|É|Í|Ó|Ú|Ü|Ö])+' value="<?php echo $servicio['contrasenia']?>">
                     <div class="w-25 d-inline">
                         <button class="btn" id="generar">Generar</button>
                         <button id='ver' class='btn btn-link d-inline'>Ver</button>
