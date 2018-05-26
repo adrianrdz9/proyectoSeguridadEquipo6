@@ -1,0 +1,81 @@
+body{
+	border: dashed;
+	border-width: 2px;
+	margin-bottom: 0px;
+	border-color: white;
+	background-color: lightblue;
+}
+img#logo{
+	width: 200px; height: 100px;
+	float: right;
+	margin-right:2%;
+	margin-top: 0;
+}
+h1{
+	color: white;
+	font-size: 3em;
+	margin-right: 0;
+	margin-bottom: 50px;
+	font-family: 'Sunflower', sans-serif;
+}
+h4{
+	display: inline;
+	text-align: center;
+	padding: 2px 2px 2px 2px;
+	color:#392613;
+	font-family: 'Sunflower', sans-serif;
+	text-transform: uppercase;
+	background-color: white;
+}
+/*redes*/
+div.red img.red{
+ 	width: 90%; height: 150px;
+ 	padding: 5px 10px 0 10px;
+}
+div.red{
+	padding: 0 10px 0 7px;
+	padding-bottom: 100px;
+	padding-top: 50px;
+	background-color: #f2e6d9;
+	width: 13.7%; height: 150px;
+	margin-right: 10px;
+	margin-top: 20px;
+	border-style: solid;
+	border-color: #f2e6d9;
+	border-radius: 3px;
+
+	float: right;
+}
+
+input[type=text]{
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+
+}
+input#submit{
+    background-color: #f2e6d9;
+    color: #392613;
+    padding: 14px 20px;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    display: list-item;
+    font-size: large;
+    padding-bottom:40px;
+    height: 4px;
+    margin-left: 160px;
+    margin: 30px 46% 20px 0;
+    float: right;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #e6ccb3;
+}
+
+input#submit:hover {
+    opacity: 0.8;
+}
